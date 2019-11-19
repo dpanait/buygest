@@ -1,0 +1,12 @@
+body{
+    height:100vh;
+    margin: 0 auto;
+}
+#nav-body-views{
+    display: inline-flex;
+    align-items: center;
+    height: 94vh;
+}
+webview{
+    height: 94vh;
+}

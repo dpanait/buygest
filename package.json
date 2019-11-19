@@ -1,0 +1,60 @@
+{
+  "name": "buygest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "install-app-deps",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=test electron .",
+    "production": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "inst":"node_modules/.bin/electron-builder --linux",
+    "deb":"electron-builder --linux deb",
+    "multi":"electron-builder -mwl",
+    "linux": "electron-builder --linux"
+  }, 
+  "author": "dani",
+  "license": "ISC",
+  "build": {
+    "appId": "buy-gest",
+    "asar": true,
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+        
+      ],
+      "background":"build/buygest.png"
+    },
+    "linux": {
+      "target": [        
+        "deb"
+      ],
+      "icon":"build/buygest.png"
+    },
+    "win": {
+      "target": "NSIS",
+      "icon": "build/icon.ico"
+    }
+  },
+  "dependencies": {
+    "electron-navigation": "^1.5.8",
+    "electron-store": "^5.1.0",
+    "jquery": "^3.4.1"
+  },
+  "devDependencies": {
+    "electron": "^7.0.0",
+    "electron-builder": "^21.2.0",
+    "electron-reload": "^1.5.0"
+  }
+}
