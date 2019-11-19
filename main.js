@@ -7,6 +7,7 @@ const { ipcRenderer, ipcMain } = require('electron')
 const path = require('path')
 const Store = require("electron-store")
 const store = new Store();
+const updater = require('./js/updater.js');
  
 /*require('electron-reload')(__dirname, {
   electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
@@ -40,7 +41,8 @@ app.on('ready', () => {
         console.log("Pegatinas: ",arg)
         store.set("pegatinas",arg)
     })
-    
+
+    updater.init();
     
  
 });
