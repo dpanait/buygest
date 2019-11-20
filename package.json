@@ -59,8 +59,7 @@
     }
   },
   "dependencies": {
-    "electron": "^7.1.1",
-    "electron-installer-debian": "^2.0.1",
+    "electron": "^7.0.0",
     "electron-navigation": "^1.5.8",
     "electron-store": "^5.1.0",
     "jquery": "^3.4.1"
@@ -68,6 +67,7 @@
   "devDependencies": {
     "electron-builder": "^21.2.0",
     "electron-installer-windows": "^2.0.0",
+    "electron-installer-debian": "^2.0.1",
     "electron-packager": "^14.1.0",
     "electron-reload": "^1.5.0"
   }
