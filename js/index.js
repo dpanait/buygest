@@ -5,8 +5,15 @@ const store = new Store();
 const tickets = store.get("tickets");// impresora de tickets
 const pegatinas = store.get("pegatinas");// ipresoar de pegatinas
 const enav = new (require('electron-navigation'))({ 
-    showAddTabButton: true 
+    showAddTabButton: true,
+    showBackButton: false,
+    showForwardButton: false,
+    showReloadButton: false,
+    showUrlBar: true 
 })
+/**
+ * extender electron-navigation
+ */
 enav.setActive = function (id) {
     var tabs = $('.nav-tabs-tab').toArray();
     var tabs_webview = $('.nav-views-view').toArray();
@@ -22,6 +29,13 @@ enav.setActive = function (id) {
     $('.nav-views-view').eq(setActiveTabIndex).addClass("active");
 
 }
+enav.addIdLastWebview = function(id){
+    var tabs = $('.nav-tabs-tab').toArray();
+    var tabs_webview = $('.nav-views-view').toArray();
+    var setActiveTabIndex = tabs_webview.indexOf($('.nav-views-view.active')[0]);
+    $('.nav-views-view').eq(setActiveTabIndex).attr("id",id);
+}
+
 
 const cajas_id = 3;
 const sessionId_last = 0;
@@ -33,10 +47,11 @@ var envios = enav.newTab(`https://yuubbb.com/pro/buy09.02/ibadanica/envios`, {
     close: false,
     newTabCallback:null,
     postTabOpenCallback:webview => {
+        onOpenNewWindowAddId(webview);
         webview.addEventListener('dom-ready', () => {
             enav.setActive("envios")
             //webview.openDevTools()
-          })
+        })
     }
 
 });
@@ -48,6 +63,9 @@ enav.newTab(url_alm, {
     title: 'Almacen',
     id: "almacen",
     close: false,
+    postTabOpenCallback:(webview) => {
+        onOpenNewWindowAddId(webview);
+    }
 })
 // pestaña ventas
 var ventas = enav.newTab(`yuubbb.com/pro/buy09.02/ibadanica/tpv_ventas_${cajas_id}`, { 
@@ -57,6 +75,7 @@ var ventas = enav.newTab(`yuubbb.com/pro/buy09.02/ibadanica/tpv_ventas_${cajas_i
     close: false,
     newTabCallback:null,
     postTabOpenCallback:(webview) => {
+        onOpenNewWindowAddId(webview);
         webview.addEventListener('dom-ready', () => {
             //enav.setActive("tpv_ventas")
             
@@ -74,91 +93,22 @@ var desa = enav.newTab(url_alm_des, {
     close: false,
     webviewAttributes:{
         plugins: true
+    },
+    postTabOpenCallback:(webview) => {
+        onOpenNewWindowAddId(webview);
     }
 })
 // imprimir tickets desde envios por si navega
 envios.addEventListener("new-window",(res)=>{
-    if(/ticket/.test(res.url)){
-        impresion("ticket",tickets,enav);
-    }
-    if(/pegatina_individual_simple/.test(res.url)){
-        impresion("pegatina_simple",pegatinas,enav);
-    }
-    if(/\.pdf/.test(res.url)){
-        var pdf_url ="https://yuubbb.com/images/24/pdf_SEUR/2019/03190149355389.pdf";
-        console.log("PDF",res)
-        //qitar elementos del dom tabs y body view
-        var pdf_win = document.getElementById("ven_pdf");
-        var content_body = document.getElementById("nav-body-views");
-        var tab_quit = document.getElementsByClassName("nav-tabs-tab active")[0]
-        var contents_tabs = document.getElementById("nav-body-tabs");
-        content_body.removeChild(pdf_win);
-        contents_tabs.removeChild(tab_quit);
-        //set visible la tab que estas
-        console.log(desa.id)
-        enav.setActive(desa.id)
-        shell.openExternal(pdf_url);
-
-    }
+    inc_impresion(res);
 })
 // imprimir tickets desde desarollo
 desa.addEventListener("new-window",(res)=>{
-    if(/yubprint/.test(res.url)){
-        alert("Tienes activada la impresion por el servidor de impresion")
-        //shell.openExternal(res.url)
-    }
-    if(/ticket/.test(res.url)){
-        impresion("ticket",tickets,enav);
-        var webview_print = document.getElementById("ticket");
-        /*webview_print.addEventListener("dom-ready",()=>{
-            webview_print.openDevTools();
-        })*/
-        
-    }
-    if(/pegatina_individual_simple/.test(res.url)){
-        impresion("pegatina_simple",pegatinas,enav);
-    }
-    if(/\.pdf/.test(res.url)){
-        var pdf_url ="https://yuubbb.com/images/24/pdf_SEUR/2019/03190149355389.pdf";
-        console.log("PDF",res)
-        //qitar elementos del dom tabs y body view
-        var pdf_win = document.getElementById("ven_pdf");
-        var content_body = document.getElementById("nav-body-views");
-        var tab_quit = document.getElementsByClassName("nav-tabs-tab active")[0]
-        var contents_tabs = document.getElementById("nav-body-tabs");
-        content_body.removeChild(pdf_win);
-        contents_tabs.removeChild(tab_quit);
-        //set visible la tab que estas
-        console.log(desa.id)
-        enav.setActive(desa.id)
-        shell.openExternal(pdf_url);
-
-    }
+    inc_impresion(res);
 });
 // imprimir tikets desde ventas
 ventas.addEventListener("new-window",(res)=>{
-    if(/ticket/.test(res.url)){
-        impresion("ticket",tickets,enav);
-    }
-    if(/pegatina_individual_simple/.test(res.url)){
-        impresion("pegatina_simple",pegatinas,enav);
-    }
-    if(/\.pdf/.test(res.url)){
-        var pdf_url ="https://yuubbb.com/images/24/pdf_SEUR/2019/03190149355389.pdf";
-        console.log("PDF",res)
-        //qitar elementos del dom tabs y body view
-        var pdf_win = document.getElementById("ven_pdf");
-        var content_body = document.getElementById("nav-body-views");
-        var tab_quit = document.getElementsByClassName("nav-tabs-tab active")[0]
-        var contents_tabs = document.getElementById("nav-body-tabs");
-        content_body.removeChild(pdf_win);
-        contents_tabs.removeChild(tab_quit);
-        //set visible la tab que estas
-        console.log(desa.id)
-        enav.setActive(desa.id)
-        shell.openExternal(pdf_url);
-
-    }
+    inc_impresion(res);
 });
 
 
