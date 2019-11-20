@@ -14,7 +14,9 @@
     "deb:pack": "electron-packager . Buygest --platform linux --arch x64 --out dist/",
     "multi": "electron-builder -mwl",
     "linux": "electron-builder --linux",
-    "debinst": "electron-installer-debian --src dist/Buygest-linux-x64/ --dest dist/installers/ --arch amd64"
+    "debinst": "electron-installer-debian --src dist/Buygest-linux-x64/ --dest dist/installers/ --arch amd64",
+    "win": "electron-packager . Buygest --platform win32 --arch x64 -out dis/",
+    "wininst": "electron-installer-windows --src dist/Buygest-win32-x64/ --dest dist/installer/"
   },
   "author": "dani",
   "license": "ISC",
@@ -65,6 +67,7 @@
   },
   "devDependencies": {
     "electron-builder": "^21.2.0",
+    "electron-installer-windows": "^2.0.0",
     "electron-packager": "^14.1.0",
     "electron-reload": "^1.5.0"
   }
