@@ -7,7 +7,9 @@
 var impresion = function(w_print,printer,NAV){
     var NAV = NAV;
     var webview_print = document.getElementById(w_print);
+    //webview_print.openDevTools();
     webview_print.addEventListener("dom-ready",(a,b)=>{
+        //webview_print.openDevTools();
         // opciones impresion
         var options = {
             silent: true,

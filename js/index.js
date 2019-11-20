@@ -7,6 +7,21 @@ const pegatinas = store.get("pegatinas");// ipresoar de pegatinas
 const enav = new (require('electron-navigation'))({ 
     showAddTabButton: true 
 })
+enav.setActive = function (id) {
+    var tabs = $('.nav-tabs-tab').toArray();
+    var tabs_webview = $('.nav-views-view').toArray();
+    var activeTabIndex = tabs.indexOf($('.nav-tabs-tab.active')[0]);
+    //console.log("activeTabIndex", activeTabIndex, id)
+
+    $('.nav-tabs-tab').eq(activeTabIndex).removeClass("active")
+    $('.nav-views-view').eq(activeTabIndex).removeClass("active")
+
+    var setActiveTabIndex = tabs_webview.indexOf($('.nav-views-view#'+id)[0]);
+    //console.log("setActiveTabIndex",setActiveTabIndex,$('.nav-views-view#'+id))
+    $('.nav-tabs-tab').eq(setActiveTabIndex).addClass("active")
+    $('.nav-views-view').eq(setActiveTabIndex).addClass("active");
+
+}
 
 const cajas_id = 3;
 const sessionId_last = 0;
@@ -88,8 +103,17 @@ envios.addEventListener("new-window",(res)=>{
 })
 // imprimir tickets desde desarollo
 desa.addEventListener("new-window",(res)=>{
+    if(/yubprint/.test(res.url)){
+        alert("Tienes activada la impresion por el servidor de impresion")
+        //shell.openExternal(res.url)
+    }
     if(/ticket/.test(res.url)){
         impresion("ticket",tickets,enav);
+        var webview_print = document.getElementById("ticket");
+        /*webview_print.addEventListener("dom-ready",()=>{
+            webview_print.openDevTools();
+        })*/
+        
     }
     if(/pegatina_individual_simple/.test(res.url)){
         impresion("pegatina_simple",pegatinas,enav);
