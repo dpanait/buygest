@@ -59,10 +59,15 @@
     }
   },
   "dependencies": {
+    "download-file-with-progressbar": "^1.2.3",
     "electron": "^7.0.0",
+    "electron-download-manager": "^2.1.2",
+    "electron-fetch": "^1.4.0",
     "electron-navigation": "^1.5.8",
     "electron-store": "^5.1.0",
+    "fs": "0.0.1-security",
     "jquery": "^3.4.1",
+    "request": "^2.88.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0"
   },
