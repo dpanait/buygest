@@ -12,7 +12,31 @@ const updater = require('./js/updater.js');
 /*require('electron-reload')(__dirname, {
   electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
 });*/
+//const socket = require('socket.io-client').connect("https://yuubbb.com:2020/",{ port: 2020,reconnect: true, transports: [ 'websocket' ] });
+/*const io = require("socket.io-client")//.connect("https://yuubbb.com",{ port: 2020,reconnect: true, transports: [ 'websocket' ] });
+var socket = io.connect('https://yuubbb.com:2020/',{ 
+  port: 2020,
+  reconnect: true, 
+  transports: [ 'websocket' ],
+  secure: true, 
+  rejectUnauthorized: false 
+});
+socket.connect();*/
+/*var socket = io('https://yuubbb.com:2020');
+socket.connect();
+socket.emit('buygest_electron_app', "chat_message");
 
+//var socket = io('https://yuubbb.com:2020');
+  socket.on('connect', function(){
+      console.log("conect")
+  });
+  socket.on('event', function(data){
+      console.log("event",data)
+  });
+  socket.on('disconnect', function(){
+      console.log("disconnect")
+  });
+*/
 let win;
 
 app.on('ready', () => {
@@ -41,9 +65,30 @@ app.on('ready', () => {
         console.log("Pegatinas: ",arg)
         store.set("pegatinas",arg)
     })
+    ipcMain.on("update-app",(e,res)=>{
+      console.log("update-app",res)
+      openUpdateWindow(res)
+    })
 
     updater.init();
-    
+    /*let socket = io.connect('https://yuubbb.com:2020',{
+      port: 2020,
+      transports: [ 'websocket' ],
+      upgrade: false,
+      secure: true, 
+      reconnection: false, 
+      rejectUnauthorized: false,
+      forcenew: false
+    });*/
+    //socket.connect()
+    /*console.log("SOCKET",socket.connected);
+    setTimeout(() => {}, 1000)
+    socket.on('connect', () => {
+      console.log("connected")
+    })
+    socket.on('connect_error', (err) => {
+      console.log("erorr",err)
+    })*/
  
 });
 app.on('open-url', (event, data)=> {
@@ -268,3 +313,49 @@ function openAboutWindow() {
       newWindow = null
     })
   }
+  var newWindowUpdate = null;
+  var openUpdateWindow = function(respuesta){
+    console.log("openUpdateWindow",respuesta)
+    if (newWindowUpdate) {
+        newWindowUpdate.focus()
+        return
+      }
+    
+      newWindowUpdate = new BrowserWindow({
+        height: 500,
+        resizable: false,
+        width: 600,
+        title: '',
+        minimizable: false,
+        fullscreenable: false,
+        webPreferences: {
+              nodeIntegration: true,
+              webviewTag: true
+          }
+      })
+    
+     
+      //var printers = newWindow.webContents.getPrinters();
+      newWindowUpdate.webContents.on("dom-ready",(dom)=>{
+        console.log("dom-ready",respuesta)
+        newWindowUpdate.send("update-app-win",{res:respuesta,win: newWindowUpdate})
+      })
+      ipcMain.on("download-app",(e,arg)=>{
+        console.log("download-app",arg)
+        if(arg){
+          var contents = newWindowUpdate.webContents;
+          var down =  contents.downloadURL("https://yuubbb.com/pro/buy01.00/yuubbbshop/servidor_impresion/Servidor_impresion.deb");
+        console.log(down)
+        contents.on("will-download",(a)=>{
+          console.log("DDDDDDD",a);
+        })
+        }
+                
+      });
+      newWindowUpdate.loadURL('file://' + __dirname + '/views/updateApp.html')
+      
+      newWindowUpdate.on('closed', function() {
+        newWindowUpdate = null
+      })
+  
+}

@@ -15,7 +15,7 @@
     "multi": "electron-builder -mwl",
     "linux": "electron-builder --linux",
     "debinst": "electron-installer-debian --src dist/Buygest-linux-x64/ --dest dist/installers/ --arch amd64",
-    "win": "electron-packager . Buygest --platform win32 --arch x64 -out dis/",
+    "win": "electron-packager . Buygest --platform=win32 --arch=x64 --icon=images/icon.ico --out=dist/",
     "wininst": "electron-installer-windows --src dist/Buygest-win32-x64/ --dest dist/installer/"
   },
   "author": "dani",
@@ -62,7 +62,9 @@
     "electron": "^7.0.0",
     "electron-navigation": "^1.5.8",
     "electron-store": "^5.1.0",
-    "jquery": "^3.4.1"
+    "jquery": "^3.4.1",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
     "electron-builder": "^21.2.0",

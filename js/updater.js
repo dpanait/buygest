@@ -1,3 +1,4 @@
+
 // The current version of your app.
 const APP_VERSION = require('../package.json').version
 
@@ -16,24 +17,24 @@ const AUTO_UPDATE_URL =
   }
   
   function initDarwinWin32 () {
-    electron.autoUpdater.on(
+    app.autoUpdater.on(
       'error',
       (err) => console.error(`Update error: ${err.message}`))
   
-    electron.autoUpdater.on(
+      app.autoUpdater.on(
       'checking-for-update',
       () => console.log('Checking for update'))
   
-    electron.autoUpdater.on(
+      app.autoUpdater.on(
       'update-available',
       () => console.log('Update available'))
   
-    electron.autoUpdater.on(
+      app.autoUpdater.on(
       'update-not-available',
       () => console.log('No update available'))
   
     // Ask the user if he wants to update if update is available
-    electron.autoUpdater.on(
+    app.autoUpdater.on(
       'update-downloaded',
       (event, releaseNotes, releaseName) => {
         dialog.showMessageBox(window, {
@@ -44,14 +45,14 @@ const AUTO_UPDATE_URL =
           title: 'Update available'
         }, response => {
           if (response === 0) {
-            electron.autoUpdater.quitAndInstall()
+            app.autoUpdater.quitAndInstall()
           }
         })
       }
     )
   
-    electron.autoUpdater.setFeedURL(AUTO_UPDATE_URL)
-    electron.autoUpdater.checkForUpdates()
+    app.autoUpdater.setFeedURL(AUTO_UPDATE_URL)
+    app.autoUpdater.checkForUpdates()
   }
   
   module.exports = {

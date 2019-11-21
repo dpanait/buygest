@@ -4,6 +4,7 @@
  * @param {*} printer  es el nombre de la impresora que usamos para imprimir
  * @param {*} NAV      es el objeto Navigation que usamos para tabs
  */
+
 /*const Store = require("electron-store")
 const store = new Store();
 const tickets = store.get("tickets");// impresora de tickets

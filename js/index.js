@@ -1,9 +1,23 @@
 const $ = require("jquery")
-const { shell } = require("electron");
+const { shell, ipcRenderer } = require("electron");
 const Store = require("electron-store")
 const store = new Store();
 const tickets = store.get("tickets");// impresora de tickets
 const pegatinas = store.get("pegatinas");// ipresoar de pegatinas
+
+const io = require('socket.io-client');
+var socket = io('https://yuubbb.com:2020',{
+    rejectUnauthorized: false,
+    transports: [ 'websocket' ]
+});
+socket.connect();
+socket.emit('buygest_electron_app', "chat_message");
+socket.on("buygest_msg_electron",(res)=>{
+    console.log("connected1", res)
+    ipcRenderer.send('update-app', res);
+
+})
+
 const enav = new (require('electron-navigation'))({ 
     showAddTabButton: true,
     showBackButton: false,
@@ -110,36 +124,3 @@ desa.addEventListener("new-window",(res)=>{
 ventas.addEventListener("new-window",(res)=>{
     inc_impresion(res);
 });
-
-
-/**
- * webview event tvp_ventas
- */
-//var ventas = document.getElementById("tpv_ventas");
-//ventas.setAttribute('plugins', '');
-//console.log("tpv_ventas",ventas)
-/*ventas.addEventListener("new-window", (res) => {
-    console.log("VENTAS NEW WINDOW",res);
-    if(/ticket/.test(res.url)){
-        var ticket = document.getElementById("ticket");
-        ticket.addEventListener("dom-ready",(a,b)=>{
-            console.log("ticket",a,b)
-            var options = {
-                silent: true,
-                deviceName: "Boomaga",
-                printBackground: true
-              }
-              var p = ticket.print(options);
-              if(p){
-                  p.then(()=>{
-                    setTimeout(function(){
-                        enav.closeTab("ticket");
-                    },2000);
-                   
-                  })
-              }
-        })
-    }
-
-})*/
-
