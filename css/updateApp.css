@@ -1,0 +1,91 @@
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.btn-secondary {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    cursor: pointer;
+}
+.form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555555;
+    background-color: #ffffff;
+    background-image: none;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.justify-content-center {
+    -ms-flex-pack: center!important;
+    justify-content: center!important;
+}
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    flex-direction: column;
+}
+.pb-1{
+    padding-bottom: .25rem!important;
+}
+.pb-2{
+    padding-bottom: .5rem!important;/*margin-top: .5rem!important;*/
+}
+.mb-2{
+    margin-bottom: .5rem!important; 
+}
+.mt-2{
+    margin-top: .5rem!important; 
+}
+hr {
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+#myProgress {
+    width: 100%;
+    background-color: grey;
+}
+
+#myBar {
+    width: 0%;
+    height: 30px;
+    background-color: green;
+}
+a.btn {
+    text-decoration: none;
+}
+.content-btn-down{
+    width: 356px;
+    margin: 0 auto;
+}  
