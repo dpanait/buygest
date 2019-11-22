@@ -11,6 +11,10 @@ if(process.platform === "darwin"){
     link_download.href = "http://yuubbb.com/pro/buy09.02/yuubbbshop/servidor_impresion/Servidor_impresion.deb";
     extencion = "deb";
 }
+var mas_tarde = document.getElementById("mas_tarde");
+mas_tarde.addEventListener("click",(e)=>{
+    ipcRenderer.send("close-update_window",true);
+})
 //cuando rescibimos el aviso de actualizacion
 ipcRenderer.on('update-app-win', (event, arg) => {
     console.log(event, arg)

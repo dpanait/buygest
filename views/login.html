@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <h3 class="title-page mt-2 mb-2">Inserta los tres codigos para iniciar sesión</h3>
+        </div>
+        <div class="row justify-content-center">
+            <div class="inputs-cont mt-3 mb-3">
+                <input type="text" class="form-control wpx-80 fs-30" id="codeI" maxlength="4">
+                <input type="text" class="form-control wpx-80 ml-3 fs-30" id="codeII" maxlength="4">
+                <input type="text" class="form-control wpx-80 ml-3 fs-30" id="codeIII" maxlength="4">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="content-btn-login mb-3">
+                <button class="btn btn-primary" id="login_btn">Login</button>
+                <button class="btn btn-secondary ml-2" id="login_cancel">Cancel</button>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div id="cont_select_almacen"></div>
+        </div>
+        <div class="row justify-content-center" id="guardar_btn_cajas">
+            <div class="content-btn-cajas mt-3">
+                <button class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../js/login.js"></script>  
+</body>
+</html>

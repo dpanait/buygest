@@ -1,3 +1,16 @@
+@media (min-width: 1200px){
+    .container {
+        max-width: 1140px;
+    }
+}
+.container{
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #007bff;
@@ -65,41 +78,73 @@
     padding-top: .25rem!important;
 }
 .pt-1{
-    padding-top: .5rem!important;
+    padding-top: .25rem!important;
 }
 .mb-2{
     margin-bottom: .5rem!important; 
 }
+.mb-3{
+    margin-bottom: 1.5rem!important; 
+}
+.mb-4{
+    margin-bottom: 2rem!important; 
+}
+.mb-5{
+    margin-bottom: 3rem!important; 
+}
 .mt-2{
     margin-top: .5rem!important; 
+}
+.mt-3{
+    margin-top: 1.5rem!important; 
+}
+.mt-4{
+    margin-top: 2rem!important; 
+}
+.mt-5{
+    margin-top: 3rem!important; 
+}
+.ml-1{
+    margin-left: .25rem!important;
+}
+.ml-2{
+    margin-left: .5rem!important;
+}
+.ml-3{
+    margin-left: 1rem!important;
 }
 hr {
     border: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     width: 400px;
 }
-#myProgress {
-    width: 100%;
-    background-color: grey;
-}
-
-#myBar {
-    width: 0%;
-    height: 30px;
-    background-color: green;
-}
-a.btn {
-    text-decoration: none;
-}
-.content-btn-down{
-    width: 356px;
+.content-btn-login{
+    width: 149px;
     margin: 0 auto;
 }  
 .title-page{
-    width: 276px;
+    width: 336px;
     margin: 0 auto;
 }
-.msg_content{
-    width: 100%;
-    text-align: center;
+.inputs-cont{
+    width: 353px;
+    display: flex;
+    margin: 0 auto;
+}
+.wpx-80{
+    width: 80px;
+}
+.fs-30{
+    font-size: 30px;
+}
+#cont_select_almacen{
+    width: 200px;
+    margin: 0 auto;
+}
+#guardar_btn_cajas{
+    display: none;
+}
+.content-btn-cajas{
+    width: 82px;
+    margin: 0 auto;
 }

@@ -34,6 +34,7 @@ ipcRenderer.on('printers', (event, arg) => {
     });
     select_pegatinas +="</select></div>";
     document.getElementById("conte_sel_pegatinas").innerHTML = select_pegatinas;
+    
 
 })
 // click sobre el botton guardar tickets

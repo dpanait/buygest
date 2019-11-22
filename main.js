@@ -24,8 +24,12 @@ app.on('ready', () => {
             plugins: true
         }
     });
- 
-    win.loadURL(`file:///${__dirname}/views/index.html`);
+    store.set("login",true)
+    if(store.get("login")){
+      win.loadURL(`file:///${__dirname}/views/login.html`);
+    } else {
+      win.loadURL(`file:///${__dirname}/views/index.html`);
+    }
     //win.loadURL(`https://yuubbb.com/pro/buy09.02/ibadanica/envios`);
     win.on('closed', () => {
         win = null;
@@ -41,8 +45,12 @@ app.on('ready', () => {
     })
     ipcMain.on("update-app",(e,res)=>{
       console.log("update-app",res)
+      store.set("updateWindow", true);
       openUpdateWindow(res)
     })
+    if(store.get("updateWindow")){
+      openUpdateWindow("Si quieres que la aplicación tenga todas las funcionalidades disponibles actualiza. Descarga la actualización y la instalas desde la carpeta \'Descargas\' busca BuyGest!!!");
+    }
 
     //updater.init();
     
@@ -313,6 +321,15 @@ function openAboutWindow() {
       newWindowUpdate.webContents.on("dom-ready",(dom)=>{
         console.log("dom-ready",respuesta)
         newWindowUpdate.send("update-app-win",{res:respuesta,win: newWindowUpdate})
+        ipcMain.on("close-update_window",(e,d)=>{
+          if(d){
+            if(newWindowUpdate!= null){
+              store.set("updateWindow", true);
+              newWindowUpdate.destroy();
+            }
+            
+          }
+        })
       })
     
       newWindowUpdate.loadURL('file://' + __dirname + '/views/updateApp.html')
@@ -337,17 +354,20 @@ function openAboutWindow() {
             newWindowUpdate.send("proces_download",{a:item.getReceivedBytes(),t:item.getTotalBytes()});
             console.log(`Received bytes: ${item.getReceivedBytes()}`)
           }
+
         }
       })
       item.once('done', (event, state) => {
         if (state === 'completed') {
           console.log('Download successfully')
           newWindowUpdate.send("proces_download_complete",true)
+          //store.set("updateWindow",false)
         } else {
           console.log(`Download failed: ${state}`)
         }
       })
       console.log("Tamaño: ",item.getTotalBytes())
     })
+    
   
 }
