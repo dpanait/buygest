@@ -17,6 +17,7 @@ var request = require('request');
 var fs = require('fs');
 const dl = require('download-file-with-progressbar');
 const fetch = require('electron-fetch').default
+var persistRequest = require('persist-request')('/tmp/');
 /*require('electron-reload')(__dirname, {
   electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
 });*/
@@ -91,11 +92,14 @@ app.on('ready', () => {
             console.log('progress', (curr / total * 100).toFixed(2) + '%');
         },
     }*/
-    var link = "https://yuubbb.com/pro/buy01.00/yuubbbshop/app_bygest/Servidor_impresion.deb"
+    var link = "https://yuubbb.com/pro/buy09.02/yuubbbshop/app_bygest/Servidor_impresion.deb"
     //var dd = dl(link, option);
-    fetch(link)
+    var stream = persistRequest.get(link);
+ 
+    stream.pipe(app.getPath("downloads") + "/my-app/server.deb");
+    /*fetch(link)
     .then(res => res.text())
-    .then(body => console.log(body))
+    .then(body => console.log(body))*/
       /*var link = "https://yuubbb.com/pro/buy01.00/yuubbbshop/servidor_impresion/Servidor_impresion.deb"
       DownloadManager.download({
           url: "https://yuubbb.com/pro/buy01.00/yuubbbshop/servidor_impresion/Servidor_impresion.deb",
