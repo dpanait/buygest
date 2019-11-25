@@ -5,12 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Actualizar la aplicacion</title>
+    <link rel="stylesheet" href="../css/updateApp.css">
 </head>
 <body>
-    <h3>Configurar descarga de aplicacion</h3>
-    <div id="msg"></div>
-    <div class="content_btn">
-        <button id="download" class="btn btn-primary">Descargar app</button>
+    <h3 class="title-page mb-2">Configurar descarga de aplicacion</h3>
+    <div id="myProgress">
+            <div id="myBar"></div>
+          </div>
+    <div id="msg" class="msg_content mt-2 mb-2"></div>
+    </div>
+    <div class="content-btn-down">
+        <a id="link_download" class="btn btn-primary" href="#" download="Servidor_impresion.dmg">Descargar la app BuyGest</a>
+        <button id="mas_tarde" class="btn btn-secondary" style="margin-left: 20px;">Mas Tarde</button>
     </div>
     <script src="../js/updateApp.js"></script>
 </body>

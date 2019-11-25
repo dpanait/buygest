@@ -59,12 +59,14 @@
     }
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "download-file-with-progressbar": "^1.2.3",
     "electron": "^7.0.0",
     "electron-download-manager": "^2.1.2",
     "electron-fetch": "^1.4.0",
     "electron-navigation": "^1.5.8",
     "electron-store": "^5.1.0",
+    "electronjs-progressbar": "^1.1.5",
     "fs": "0.0.1-security",
     "jquery": "^3.4.1",
     "persist-request": "^1.2.2",
