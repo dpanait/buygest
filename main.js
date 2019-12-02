@@ -10,9 +10,7 @@ const store = new Store();
 const updater = require('./js/updater.js');
 var request = require('request');
 var fs = require('fs');
-const dl = require('download-file-with-progressbar');
-const fetch = require('electron-fetch').default
-var persistRequest = require('persist-request')('/tmp/');
+const vers = require("./lib_prop/mod_buygest.js/index.js")
 /*require('electron-reload')(__dirname, {
   electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
 });*/
@@ -29,8 +27,21 @@ socket.connect();*/
 /*var socket = io('https://yuubbb.com:2020');
 socket.connect();
 socket.emit('buygest_electron_app', "chat_message");
+
 */
 
+/*var re = vers.get_version_buygest(function(response){
+  console.log("response",response)
+  //set version de buygest
+  //store.set("version",response);
+});*/
+//configuramos la variable version para usarla en donde hace falta
+var result = vers.get_version_buygest();
+result.then(response=>{
+  //console.log("response",response)
+  //set version de buygest
+  store.set("version",response);
+})
 
 let win;
 global.sysVersion = process.platform;
@@ -42,13 +53,14 @@ app.on('ready', () => {
             nodeIntegration: true,
             webviewTag: true,
             plugins: true
-        }
+        },
+        icon: 'images/buygest.png'
     });
-    store.set("login",true)
+    //store.set("login",true)
     if(store.get("login")){
-      win.loadURL(`file:///${__dirname}/views/login.html`);
-    } else {
       win.loadURL(`file:///${__dirname}/views/index.html`);
+    } else {
+      win.loadURL(`file:///${__dirname}/views/login.html`);
     }
     //win.loadURL(`https://yuubbb.com/pro/buy09.02/ibadanica/envios`);
     win.on('closed', () => {
@@ -68,97 +80,20 @@ app.on('ready', () => {
       store.set("updateWindow", true);
       openUpdateWindow(res)
     })
-    ipcMain.on("descargar",(e,a)=>{
-      /*option = {
-        filename: 'server.deb',
-        dir: app.getPath("downloads") + "/my-app",
-        onDone: (info)=>{
-            console.log('done', info);
-        },
-        onError: (err) => {
-            console.log('error', err);
-        },
-        onProgress: (curr, total) => {
-            console.log('progress', (curr / total * 100).toFixed(2) + '%');
-        },
-    }*/
-    var link = "https://yuubbb.com/pro/buy09.02/yuubbbshop/app_bygest/Servidor_impresion.deb"
-    //var dd = dl(link, option);
-    var stream = persistRequest.get(link);
- 
-    stream.pipe(app.getPath("downloads") + "/my-app/server.deb");
-    /*fetch(link)
-    .then(res => res.text())
-    .then(body => console.log(body))*/
-      /*var link = "https://yuubbb.com/pro/buy01.00/yuubbbshop/servidor_impresion/Servidor_impresion.deb"
-      DownloadManager.download({
-          url: "https://yuubbb.com/pro/buy01.00/yuubbbshop/servidor_impresion/Servidor_impresion.deb",
-          onProgress:  function(progress){
-            console.log("onProgress",progress)
-        }
-      }, function (error, info) {
-          if (error) {
-              console.log(error);
-              return;
-          }
-
-          console.log("DONE: " + info.url);
-      });
-      DownloadManager.bulkDownload({
-          urls: link,
-          path: "bulk-download"
-      }, function (error, finished, errors) {
-          if (error) {
-              console.log("finished: " + finished);
-              console.log("errors: " + errors);
-              return;
-          }
-
-          console.log("all finished");
-      })*/
-      //downloadMI();
-    })
-
-    ipcMain.on("download", (event, info) => {
-      info.properties.onProgress = (e,status) => win.webContents.send("download progress", status);
-        download(BrowserWindow.getFocusedWindow(), info.url, info.properties)
-            .then(dl => {
-              console.log("dl",dl,dl.getSavePath())
-              
-              win.webContents.send("download complete", dl.getSavePath())
-            })
-            .catch(err=>console.log("ERRROR: ",err));
+    if(store.get("updateWindow")){
+      openUpdateWindow("Si quieres que la aplicación tenga todas las funcionalidades disponibles actualiza. Descarga la actualización y la instalas desde la carpeta \'Descargas\' busca BuyGest!!!");
+    }
+    ipcMain.on("version-app",(e,arg)=>{
+      if(arg){
+        win.loadURL(`file:///${__dirname}/views/index.html`);
+       
+      }
     });
-    ipcMain.on("down",(event,info)=>{
-      win.webContents.downloadURL("https://yuubbb.com/pro/buy09.02/yuubbbshop/servidor_impresion/Servidor_impresion.deb");
-      win.webContents.session.on('will-download', (event, item, webContents) => {
-        // Establece una dirección de guardado, haciendo que Electron no saque una ventana de guardado.
-        item.setSavePath(app.getPath("downloads") + "/my-app1")
-      
-        item.on('updated', (event, state) => {
-          if (state === 'interrupted') {
-            console.log('Download is interrupted but can be resumed')
-          } else if (state === 'progressing') {
-            if (item.isPaused()) {
-              console.log('Download is paused')
-            } else {
-              console.log(`Received bytes: ${item.getReceivedBytes()}`)
-            }
-          }
-        })
-        item.once('done', (event, state) => {
-          if (state === 'completed') {
-            console.log('Download successfully')
-          } else {
-            console.log(`Download failed: ${state}`)
-          }
-        })
-      })
+    store.set("APP_VERSION",app.getVersion());
+    ipcMain.on("msg_web",(e,a)=>{
+      console.log("msg_web",a)
+      win.send("msg_electron","desde electron");
     })
-    
-
-    //updater.init();
-    
  
 });
 app.on('open-url', (event, data)=> {
@@ -166,7 +101,7 @@ app.on('open-url', (event, data)=> {
   //link = data;
   console.log("data app",data)
 });
-ipcMain.on('download-button',(event, {url}) => {
+/*ipcMain.on('download-button',(event, {url}) => {
   const windd = BrowserWindow.getFocusedWindow();
  var pro = download(windd, url.url,url.properties)
   //console.log(download(windd, url.url));
@@ -174,7 +109,7 @@ ipcMain.on('download-button',(event, {url}) => {
     console.log("EEE",e)
   })
   .catch(err=>console.log("ERROR: ",err))
-});
+});*/
 
 /*const {Menu} = require('electron')
 const electron = require('electron')
@@ -275,6 +210,14 @@ const template = [
         click(){
           openUpdateWindow("Update");
         }
+      },
+      {
+        label: "Recargar Ventas",
+        click(){
+          win.send("update-webview","ventasssss");
+          win.send("msg_electron","desde electron");
+          win.webContents.send("msg_electron", "desde electron");
+        }
       }
     ]
   },
@@ -284,7 +227,12 @@ const template = [
       {
         label: 'Learn More',
         click () { require('electron').shell.openExternal('http://electron.atom.io') }
+      },
+      {
+        label: "Version",
+        click(){showAppVersion(app.getVersion())},
       }
+      
     ]
   }
 ]
@@ -372,7 +320,7 @@ Menu.setApplicationMenu(menu)
 var newWindow = null
 function openAboutWindow() {
     if (newWindow) {
-      newWindow.focus()
+      newWindow.focus();
       return
     }
   
@@ -404,6 +352,8 @@ function openAboutWindow() {
     //console.log("openUpdateWindow",respuesta)
     if (newWindowUpdate) {
         newWindowUpdate.focus()
+        newWindowUpdate.send("update-app-win",{res:respuesta,win: "focus If"})
+        //newWindowUpdate.reload()
         return
       }
     
@@ -417,15 +367,12 @@ function openAboutWindow() {
         webPreferences: {
               nodeIntegration: true,
               webviewTag: true,
-              webSecurity: false,
-              allowRunningInsecureContent: true,
-              nodeIntegrationInSubFrames: true
         },
         allowRunningInsecureContent: true
       })
       newWindowUpdate.webContents.on("dom-ready",(dom)=>{
         console.log("dom-ready",respuesta)
-        newWindowUpdate.send("update-app-win",{res:respuesta,win: newWindowUpdate})
+        newWindowUpdate.send("update-app-win",{res:respuesta,win: "dom-ready"})
         ipcMain.on("close-update_window",(e,d)=>{
           if(d){
             if(newWindowUpdate!= null){
@@ -435,6 +382,14 @@ function openAboutWindow() {
             
           }
         })
+        /*ipcMain.on("update-app",(e,d)=>{
+          console.log("update_appp_ppp",d)
+          newWindowUpdate.send("update-app-win",{res:respuesta,win: "update-app-ipcMain"})
+        })*/
+      })
+      newWindowUpdate.webContents.on("focus",(dom)=>{
+        console.log("uadate mesage");
+        newWindowUpdate.send("update-app-win",{res:respuesta,win: "focus-fucntion"})
       })
     
       newWindowUpdate.loadURL('file://' + __dirname + '/views/updateApp.html')
@@ -444,35 +399,72 @@ function openAboutWindow() {
       })
       //newWindowUpdate.webContents.downloadURL('https://yuubbb.com/pro/buy09.02/yuubbbshop/servidor_impresion/Servidor_impresion.dmg');
       newWindowUpdate.webContents.session.on('will-download', (event, item, webContents) => {
+        console.log("item",item)
       // Establece una dirección de guardado, haciendo que Electron no saque una ventana de guardado.
       let fileName = item.getFilename();
-      //console.log(item.getFilename());
-      item.setSavePath(app.getPath("downloads") + "/" + fileName);
-  
-      item.on('updated', (event, state) => {
-        if (state === 'interrupted') {
-          console.log('Download is interrupted but can be resumed')
-        } else if (state === 'progressing') {
-          if (item.isPaused()) {
-            console.log('Download is paused')
-          } else {
-            newWindowUpdate.send("proces_download",{a:item.getReceivedBytes(),t:item.getTotalBytes()});
-            console.log(`Received bytes: ${item.getReceivedBytes()}`)
-          }
+      console.log(item.getFilename());
+      if(/buygest/.test(fileName)){
+        item.setSavePath(app.getPath("downloads") + "/" + fileName);
+    
+        item.on('updated', (event, state) => {
+          if (state === 'interrupted') {
+            console.log('Download is interrupted but can be resumed')
+          } else if (state === 'progressing') {
+            if (item.isPaused()) {
+              console.log('Download is paused')
+            } else {
+              newWindowUpdate.send("proces_download",{a:item.getReceivedBytes(),t:item.getTotalBytes()});
+              console.log(`Received bytes: ${item.getReceivedBytes()}`)
+            }
 
-        }
-      })
-      item.once('done', (event, state) => {
-        if (state === 'completed') {
-          console.log('Download successfully')
-          newWindowUpdate.send("proces_download_complete",true)
-          //store.set("updateWindow",false)
-        } else {
-          console.log(`Download failed: ${state}`)
-        }
-      })
-      console.log("Tamaño: ",item.getTotalBytes())
+          }
+        })
+        item.once('done', (event, state) => {
+          if (state === 'completed') {
+            console.log('Download successfully')
+            newWindowUpdate.send("proces_download_complete",true)
+            //store.set("updateWindow",false)
+          } else {
+            console.log(`Download failed: ${state}`)
+          }
+        })
+        //console.log("Tamaño: ",item.getTotalBytes())
+      }
     })
+
     
   
 }
+var versionWindow = null
+var showAppVersion = function(version){
+  if (versionWindow) {
+    versionWindow.focus()
+    versionWindow.reload()
+    return
+  }
+
+  versionWindow = new BrowserWindow({
+    height: 100,
+    resizable: false,
+    width: 200,
+    title: '',
+    minimizable: false,
+    fullscreenable: false,
+    webPreferences: {
+          nodeIntegration: true,
+          webviewTag: true,
+    },
+    allowRunningInsecureContent: true
+  })
+  versionWindow.setMenuBarVisibility(false);
+  versionWindow.webContents.on("dom-ready",(dom)=>{
+    versionWindow.send("show-version",version)
+  })
+
+  versionWindow.loadURL('file://' + __dirname + '/views/versionWindow.html')
+  
+  versionWindow.on('closed', function() {
+    versionWindow = null
+  })
+}
+

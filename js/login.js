@@ -1,4 +1,9 @@
 var qs = require('qs');
+var { ipcRenderer } = require("electron");
+const Store = require("electron-store")
+const store = new Store();
+var VERSION = 0.00;
+var SUBDOM_CLI = "";
 var login_btn = document.getElementById("login_btn");
 login_btn.addEventListener("click",(e)=>{
     var codI = document.getElementById("codeI").value;
@@ -8,9 +13,9 @@ login_btn.addEventListener("click",(e)=>{
         const url = 'https://yuubbb.com/pre/dani/yuubbbshop/buygest';
         const data = { 
             action: 'login',
-            codI: codI,
-            codII: codII,
-            codIII: codIII
+            codI: codI.toUpperCase(),
+            codII: codII.toUpperCase(),
+            codIII: codIII.toUpperCase()
         };
 
         fetch(url, {
@@ -21,7 +26,7 @@ login_btn.addEventListener("click",(e)=>{
             body: qs.stringify(data)
         })
         .then(function(response) {
-            //console.log('response =', response);
+            console.log('response =', response);
             return response.json();
         })
         .then(function(data) {
@@ -30,10 +35,19 @@ login_btn.addEventListener("click",(e)=>{
             var cajas = data.cajas;
             cajas.forEach(element =>{
                 select += `<option value="${element.cajas_id}">${element.cajas_name}</option>`;
+                store.set("CAJAS",element.cajas_id);
             })
             select += "</select>";
             document.getElementById("cont_select_almacen").innerHTML = select;
-            document.getElementById("guardar_btn_cajas").style.display = "block";
+            //document.getElementById("guardar_btn_cajas").style.display = "block";
+            store.set("VERSION",data.version);
+            store.set("SUBDOM_CLI",data.subdom_cli);
+            store.set("login",true);
+            VERSION = data.version;
+            SUBDOM_CLI = data.subdom_cli;
+            if(data.status){
+                ipcRenderer.send("version-app",true);
+            }
         })
         .catch(function(err) {
             console.error(err);
@@ -41,4 +55,10 @@ login_btn.addEventListener("click",(e)=>{
      }
 
     
+})
+var guardar_btn = document.getElementById("guardar_btn");
+guardar_btn.addEventListener("click",(e)=>{
+    var cajas = document.getElementById("select_almacen").value;
+    store.set("CAJAS",cajas);
+    ipcRenderer.send("version-app",{a:cajas,b:VERSION,c:SUBDOM_CLI});
 })

@@ -68,7 +68,7 @@ var inc_impresion = function(res){
     }
     if(/\.pdf/.test(res.url)){
         var pdf_url = res.url;//"https://yuubbb.com/images/24/pdf_SEUR/2019/03190149355389.pdf";
-        console.log("PDF",res.url)
+        //console.log("PDF",res.url)
         //qitar elementos del dom tabs y body view
         var pdf_win = document.getElementById("ven_pdf");
         var content_body = document.getElementById("nav-body-views");
@@ -77,8 +77,8 @@ var inc_impresion = function(res){
         content_body.removeChild(pdf_win);
         contents_tabs.removeChild(tab_quit);
         //set visible la tab que estas
-        console.log(desa.id)
-        enav.setActive(desa.id)
+        
+        enav.setActive(pdf_win.id)
         shell.openExternal(pdf_url);
 
     }

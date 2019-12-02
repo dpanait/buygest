@@ -1,14 +1,17 @@
 const { ipcRenderer } = require('electron');
+const Store = require("electron-store")
+const store = new Store();
 console.log("global.sysVersion",process.platform)
+var VERSION = store.get("VERSION");
 var link_download = document.getElementById("link_download");
 if(process.platform === "darwin"){
-    link_download.href = "http://yuubbb.com/pre/dani/servidor_impresion/Servidor_impresion.dmg";
+    link_download.href = `https://yuubbb.com/pro/buy${VERSION}/buygest_app/buygest.dmg`;
     extencion = "dmg";
 } else if(process.platform === "win32"){
-    link_download.href = "http://yuubbb.com/pro/buy09.02/yuubbbshop/servidor_impresion/Servidor_impresion.exe";
+    link_download.href = `https://yuubbb.com/pro/buy${VERSION}/buygest_app/buygest.exe`;
     extencion = "exe";
 } else if(process.platform === "linux"){
-    link_download.href = "http://yuubbb.com/pro/buy09.02/yuubbbshop/servidor_impresion/Servidor_impresion.deb";
+    link_download.href = `https://yuubbb.com/pro/buy${VERSION}/buygest_app/buygest_1.0.0_amd64.deb`;
     extencion = "deb";
 }
 var mas_tarde = document.getElementById("mas_tarde");
@@ -17,7 +20,8 @@ mas_tarde.addEventListener("click",(e)=>{
 })
 //cuando rescibimos el aviso de actualizacion
 ipcRenderer.on('update-app-win', (event, arg) => {
-    console.log(event, arg)
+    console.log("From windows "+ arg.win, arg)
+
     document.getElementById("msg").innerHTML = "<span style='color:red;'>"+arg.res+"</span>"; 
 })
 //recibimos el estado de la descarga

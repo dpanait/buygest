@@ -1,0 +1,12 @@
+{
+    "src":"dist/buygest-linux-x64/",
+    "dest": "dist/installers",
+    "icon": "./images/buygest.png",
+    "arch": "amd64",
+    "categories": [
+      "Utility"
+    ],
+    "lintianOverrides": [
+      ""
+    ]
+  }
