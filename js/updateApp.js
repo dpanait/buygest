@@ -11,7 +11,7 @@ if(process.platform === "darwin"){
     link_download.href = `https://yuubbb.com/pro/buy${VERSION}/buygest_app/buygest.exe`;
     extencion = "exe";
 } else if(process.platform === "linux"){
-    link_download.href = `https://yuubbb.com/pro/buy${VERSION}/buygest_app/buygest_1.0.0_amd64.deb`;
+    link_download.href = `https://yuubbb.com/pro/buy${VERSION}/buygest_app/buygest.deb`;
     extencion = "deb";
 }
 var mas_tarde = document.getElementById("mas_tarde");

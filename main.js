@@ -10,31 +10,7 @@ const store = new Store();
 const updater = require('./js/updater.js');
 var request = require('request');
 var fs = require('fs');
-const vers = require("./lib_prop/mod_buygest.js/index.js")
-/*require('electron-reload')(__dirname, {
-  electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
-});*/
-//const socket = require('socket.io-client').connect("https://yuubbb.com:2020/",{ port: 2020,reconnect: true, transports: [ 'websocket' ] });
-/*const io = require("socket.io-client")//.connect("https://yuubbb.com",{ port: 2020,reconnect: true, transports: [ 'websocket' ] });
-var socket = io.connect('https://yuubbb.com:2020/',{ 
-  port: 2020,
-  reconnect: true, 
-  transports: [ 'websocket' ],
-  secure: true, 
-  rejectUnauthorized: false 
-});
-socket.connect();*/
-/*var socket = io('https://yuubbb.com:2020');
-socket.connect();
-socket.emit('buygest_electron_app', "chat_message");
-
-*/
-
-/*var re = vers.get_version_buygest(function(response){
-  console.log("response",response)
-  //set version de buygest
-  //store.set("version",response);
-});*/
+const vers = require("./lib_prop/mod_buygest.js")
 //configuramos la variable version para usarla en donde hace falta
 var result = vers.get_version_buygest();
 result.then(response=>{
@@ -66,6 +42,13 @@ app.on('ready', () => {
     win.on('closed', () => {
         win = null;
     });
+    if(app.getVersion() != store.get("APP_VERSION")){
+      store.set("updateWindow", false);
+      store.set("APP_VERSION",app.getVersion());
+    } else {
+      //store.set("APP_VERSION",app.getVersion());
+    }
+//#region ipcMain 
     // escuchamos para guardar en store las pegatinas y los tickets
     ipcMain.on("tickets_saved",(e,arg)=>{
         console.log("Tickets: ",arg)
@@ -89,7 +72,9 @@ app.on('ready', () => {
        
       }
     });
-    store.set("APP_VERSION",app.getVersion());
+//#endregion
+  
+    //store.set("APP_VERSION",app.getVersion());
     ipcMain.on("msg_web",(e,a)=>{
       console.log("msg_web",a)
       win.send("msg_electron","desde electron");
@@ -101,20 +86,10 @@ app.on('open-url', (event, data)=> {
   //link = data;
   console.log("data app",data)
 });
-/*ipcMain.on('download-button',(event, {url}) => {
-  const windd = BrowserWindow.getFocusedWindow();
- var pro = download(windd, url.url,url.properties)
-  //console.log(download(windd, url.url));
-  pro.then(e=>{
-    console.log("EEE",e)
-  })
-  .catch(err=>console.log("ERROR: ",err))
-});*/
-
-/*const {Menu} = require('electron')
-const electron = require('electron')
-const app = electron.app*/
-
+///////////////////////
+// menu   /////////////
+///////////////////////
+//#region Menu
 const template = [
   {
     label: 'Edit',
@@ -197,7 +172,7 @@ const template = [
     ]
   },
   {
-    label: 'Printers',
+    label: 'Options',
     submenu: [
       {
         label: 'Printers',
@@ -210,7 +185,7 @@ const template = [
         click(){
           openUpdateWindow("Update");
         }
-      },
+      }/*,
       {
         label: "Recargar Ventas",
         click(){
@@ -218,7 +193,7 @@ const template = [
           win.send("msg_electron","desde electron");
           win.webContents.send("msg_electron", "desde electron");
         }
-      }
+      }*/
     ]
   },
   {
@@ -229,8 +204,7 @@ const template = [
         click () { require('electron').shell.openExternal('http://electron.atom.io') }
       },
       {
-        label: "Version",
-        click(){showAppVersion(app.getVersion())},
+        label: "Version - " + app.getVersion()
       }
       
     ]
@@ -314,9 +288,13 @@ if (process.platform === 'darwin') {
     }
   ]
 }
-
+//#endregion
 const menu = Menu.buildFromTemplate(template)
 Menu.setApplicationMenu(menu)
+////////////////////////
+/// aboutWindow    /////
+////////////////////////
+//#region openAboutWinddow
 var newWindow = null
 function openAboutWindow() {
     if (newWindow) {
@@ -347,6 +325,11 @@ function openAboutWindow() {
       newWindow = null
     })
   }
+//#endregion  
+////////////////////////
+//// onUpdateWindow ////
+////////////////////////
+//#region onUpdateWindow
   var newWindowUpdate = null;
   var openUpdateWindow = function(respuesta){
     //console.log("openUpdateWindow",respuesta)
@@ -382,10 +365,6 @@ function openAboutWindow() {
             
           }
         })
-        /*ipcMain.on("update-app",(e,d)=>{
-          console.log("update_appp_ppp",d)
-          newWindowUpdate.send("update-app-win",{res:respuesta,win: "update-app-ipcMain"})
-        })*/
       })
       newWindowUpdate.webContents.on("focus",(dom)=>{
         console.log("uadate mesage");
@@ -432,9 +411,13 @@ function openAboutWindow() {
       }
     })
 
-    
-  
 }
+//#endregion
+/////////////////////
+/// showAppVersion //
+/////////////////////
+//#region showOpenWindow
+
 var versionWindow = null
 var showAppVersion = function(version){
   if (versionWindow) {
@@ -467,4 +450,5 @@ var showAppVersion = function(version){
     versionWindow = null
   })
 }
+//#endregion
 
