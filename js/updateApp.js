@@ -14,6 +14,9 @@ if(process.platform === "darwin"){
     link_download.href = `https://yuubbb.com/pro/buy${VERSION}/buygest_app/buygest.deb`;
     extencion = "deb";
 }
+document.getElementById("link_download").addEventListener("click",(e)=>{
+    store.set("updateWindow", true);
+})
 var mas_tarde = document.getElementById("mas_tarde");
 mas_tarde.addEventListener("click",(e)=>{
     ipcRenderer.send("close-update_window",true);

@@ -11,13 +11,14 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "inst": "node_modules/.bin/electron-builder --linux",
-    "deb:pack": "electron-packager . buygest --platform=linux --arch=x64 --icon=./images/buygest.png --prune=true --out=dist/",
+    "deb": "electron-packager . buygest --platform=linux --arch=x64 --icon=./images/buygest.png --prune=true --out=dist/",
     "multi": "electron-builder -mwl",
     "linux": "electron-builder --linux",
-    "debinst": "electron-installer-debian --config debian.json ",
+    "debinst": "electron-installer-debian --icon=./images/buygest.png --config debian.json ",
     "win": "electron-packager . Buygest --platform=win32 --arch=x64 --icon=./images/icon.ico --out=dist/",
     "wininst": "electron-installer-windows --src dist/Buygest-win32-x64/ --dest dist/installer/",
-    "mac": "electron-packager . Buygest --icon=./images/icon.icns --platform=darwin --arch=x64 --out=dist/"
+    "mac": "electron-packager . Buygest --icon=./images/icon.icns --platform=darwin --arch=x64 --out=dist/",
+    "macdmg": "electron-installer-dmg ./dist/Buygest-darwin-x63/Buygest.app Buygest --out=./dist/installer --overwrite --icon=./images/icon.icns"
   },
   "author": "dani",
   "license": "ISC",
@@ -75,8 +76,9 @@
   },
   "devDependencies": {
     "electron-builder": "^21.2.0",
-    "electron-installer-windows": "^2.0.0",
     "electron-installer-debian": "^2.0.1",
+    "electron-installer-dmg": "^3.0.0",
+    "electron-installer-windows": "^2.0.0",
     "electron-packager": "^14.1.0",
     "electron-reload": "^1.5.0"
   }
