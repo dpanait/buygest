@@ -66,7 +66,7 @@
     "electron-remote": "^1.3.0",
     "electron-store": "^5.1.0",
     "fs": "0.0.1-security",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "node-fetch": "^2.6.0",
     "persist-request": "^1.2.2",
     "qs": "^6.9.1",
