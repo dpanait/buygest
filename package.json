@@ -69,7 +69,7 @@
     "jquery": "^3.4.1",
     "node-fetch": "^2.6.0",
     "persist-request": "^1.2.2",
-    "qs": "^6.9.1",
+    "qs": "^6.9.7",
     "request": "^2.88.0",
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0"
